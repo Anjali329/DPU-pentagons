@@ -1,8 +1,11 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
+import { SignedIn, SignedOut, RedirectToSignIn, UserButton } from '@clerk/clerk-react'
+
 import UploadPage from './pages/UploadPage.jsx'
 import AnalysisPage from './pages/AnalysisPage.jsx'
 import ReportPage from './pages/ReportPage.jsx'
+import LoginPage from './pages/LoginPage.jsx'
 
 function Navbar() {
   const location = useLocation()
@@ -43,6 +46,9 @@ function Navbar() {
               <span className="mr-1.5">{item.icon}</span>{item.label}
             </Link>
           ))}
+          <div className="ml-4 pl-4 border-l border-slate-700/50 flex items-center">
+            <UserButton appearance={{ elements: { userButtonAvatarBox: "w-9 h-9" } }} />
+          </div>
         </div>
       </div>
     </nav>
@@ -52,13 +58,39 @@ function Navbar() {
 export default function App() {
   return (
     <Router>
-      <Navbar />
+      <SignedIn>
+        <Navbar />
+      </SignedIn>
       <main style={{ paddingTop: 80 }}>
         <Routes>
-          <Route path="/" element={<UploadPage />} />
-          <Route path="/analysis" element={<AnalysisPage />} />
-          <Route path="/report" element={<ReportPage />} />
-          <Route path="/report/:fileId" element={<ReportPage />} />
+          {/* Public Route */}
+          <Route path="/login" element={<LoginPage />} />
+
+          {/* Protected Routes */}
+          <Route path="/" element={
+            <>
+              <SignedIn><UploadPage /></SignedIn>
+              <SignedOut><RedirectToSignIn redirectUrl="/" /></SignedOut>
+            </>
+          } />
+          <Route path="/analysis" element={
+            <>
+              <SignedIn><AnalysisPage /></SignedIn>
+              <SignedOut><RedirectToSignIn redirectUrl="/analysis" /></SignedOut>
+            </>
+          } />
+          <Route path="/report" element={
+            <>
+              <SignedIn><ReportPage /></SignedIn>
+              <SignedOut><RedirectToSignIn redirectUrl="/report" /></SignedOut>
+            </>
+          } />
+          <Route path="/report/:fileId" element={
+            <>
+              <SignedIn><ReportPage /></SignedIn>
+              <SignedOut><RedirectToSignIn /></SignedOut>
+            </>
+          } />
         </Routes>
       </main>
     </Router>
