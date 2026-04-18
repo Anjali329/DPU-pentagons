@@ -40,46 +40,73 @@ export default function RiskScore({ score = 0 }) {
     const cx = size / 2, cy = size / 2, radius = 60, lineWidth = 10
     const startAngle = 0.75 * Math.PI
     const endAngle = 2.25 * Math.PI
-    const scoreAngle = startAngle + (score / 100) * (endAngle - startAngle)
-    const color = getColor(score)
+    
+    let currentScore = 0
+    let animationFrameId
+    const duration = 1500 // ms
+    const startTime = performance.now()
 
-    // Background arc
-    ctx.beginPath()
-    ctx.arc(cx, cy, radius, startAngle, endAngle)
-    ctx.strokeStyle = 'rgba(30,58,95,0.4)'
-    ctx.lineWidth = lineWidth
-    ctx.lineCap = 'round'
-    ctx.stroke()
+    const draw = (timestamp) => {
+      const elapsed = timestamp - startTime
+      const progress = Math.min(elapsed / duration, 1) // 0 to 1
+      
+      // Easing function (easeOutQuart)
+      const easeProgress = 1 - Math.pow(1 - progress, 4)
+      currentScore = easeProgress * score
 
-    // Score arc
-    ctx.beginPath()
-    ctx.arc(cx, cy, radius, startAngle, scoreAngle)
-    ctx.strokeStyle = color
-    ctx.lineWidth = lineWidth
-    ctx.lineCap = 'round'
-    ctx.shadowColor = color
-    ctx.shadowBlur = 15
-    ctx.stroke()
-    ctx.shadowBlur = 0
+      ctx.clearRect(0, 0, size, size)
 
-    // Score text
-    ctx.fillStyle = '#e2e8f0'
-    ctx.font = 'bold 28px Inter, sans-serif'
-    ctx.textAlign = 'center'
-    ctx.fillText(Math.round(score), cx, cy + 5)
+      const color = getColor(currentScore)
+      const scoreAngle = startAngle + (currentScore / 100) * (endAngle - startAngle)
 
-    ctx.fillStyle = '#94a3b8'
-    ctx.font = '11px Inter, sans-serif'
-    ctx.fillText('/100', cx, cy + 22)
+      // Background arc
+      ctx.beginPath()
+      ctx.arc(cx, cy, radius, startAngle, endAngle)
+      ctx.strokeStyle = 'rgba(30,58,95,0.4)'
+      ctx.lineWidth = lineWidth
+      ctx.lineCap = 'round'
+      ctx.stroke()
+
+      // Score arc
+      ctx.beginPath()
+      ctx.arc(cx, cy, radius, startAngle, scoreAngle)
+      ctx.strokeStyle = color
+      ctx.lineWidth = lineWidth
+      ctx.lineCap = 'round'
+      ctx.shadowColor = color
+      ctx.shadowBlur = 15
+      ctx.stroke()
+      ctx.shadowBlur = 0
+
+      // Score text
+      ctx.fillStyle = '#e2e8f0'
+      ctx.font = 'bold 36px Inter, sans-serif'
+      ctx.textAlign = 'center'
+      ctx.fillText(Math.round(currentScore), cx, cy + 8)
+
+      ctx.fillStyle = '#94a3b8'
+      ctx.font = '12px Inter, sans-serif'
+      ctx.fillText('/100', cx, cy + 26)
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(draw)
+      }
+    }
+
+    animationFrameId = requestAnimationFrame(draw)
+
+    return () => {
+      cancelAnimationFrame(animationFrameId)
+    }
   }, [score])
 
   return (
-    <div className="glass-card flex flex-col items-center justify-center col-span-1">
+    <div className="glass-card flex flex-col items-center justify-center col-span-1 transform transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1">
       <canvas ref={canvasRef} />
-      <p className="text-sm font-semibold mt-2" style={{ color: getColor(score) }}>
+      <p className="text-sm font-semibold mt-4" style={{ color: getColor(score) }}>
         {getLabel(score)}
       </p>
-      <p className="text-xs" style={{ color: 'var(--forensiq-text-muted)' }}>Overall Risk Score</p>
+      <p className="text-xs mt-1" style={{ color: 'var(--forensiq-text-muted)' }}>Overall Risk Score</p>
     </div>
   )
 }

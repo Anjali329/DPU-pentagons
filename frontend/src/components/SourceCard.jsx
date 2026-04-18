@@ -16,7 +16,7 @@ export default function SourceCard({ match }) {
   const simColor = simPercent >= 80 ? 'var(--forensiq-danger)' : simPercent >= 60 ? 'var(--forensiq-warning)' : 'var(--forensiq-success)'
 
   return (
-    <div className="glass-card flex flex-col justify-between" style={{ padding: 20 }}>
+    <div className="glass-card flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:-translate-y-1" style={{ padding: 20 }}>
       <div>
         <div className="flex items-center justify-between mb-3">
           <span className="text-xs font-mono px-2 py-1 rounded-md" style={{
@@ -44,17 +44,17 @@ export default function SourceCard({ match }) {
       </div>
 
       {/* Links */}
-      <div className="flex gap-3 mt-3">
+      <div className="flex gap-3 mt-4">
         {match.arxiv_link && (
           <a href={match.arxiv_link} target="_blank" rel="noopener noreferrer"
-            className="text-xs font-medium no-underline px-3 py-1.5 rounded-lg"
+            className="text-xs font-medium no-underline px-3 py-1.5 rounded-lg transition-transform hover:scale-105"
             style={{ background: 'rgba(99,102,241,0.1)', color: 'var(--forensiq-accent)', border: '1px solid rgba(99,102,241,0.2)' }}>
             arXiv ↗
           </a>
         )}
         {match.semantic_scholar_link && (
           <a href={match.semantic_scholar_link} target="_blank" rel="noopener noreferrer"
-            className="text-xs font-medium no-underline px-3 py-1.5 rounded-lg"
+            className="text-xs font-medium no-underline px-3 py-1.5 rounded-lg transition-transform hover:scale-105"
             style={{ background: 'rgba(16,185,129,0.1)', color: 'var(--forensiq-success)', border: '1px solid rgba(16,185,129,0.2)' }}>
             S2 ↗
           </a>
