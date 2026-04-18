@@ -8,10 +8,11 @@ import {
 } from 'lucide-react'
 import { HeroGeometric } from '../components/ui/shape-landing-hero'
 import { Header } from '../components/ui/header-2'
+import { CinematicFooter } from '../components/ui/motion-footer'
 
 /* ─────────────────────────────────────────────
    ANIMATION VARIANTS
-   ───────────────────────────────────────────── */
+   ───────────────────────────────────────── */
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i = 0) => ({
@@ -31,35 +32,37 @@ const staggerContainer = {
 function HeroSection() {
   return (
     <HeroGeometric
-      badge="Forensics Built for Academics"
+      badge="Academic Integrity Suite"
       title1="Detect Academic"
-      title2="Dishonesty Instantly"
-      description="Use AI to uncover plagiarism, writing inconsistencies, and citation anomalies in academic papers."
+      title2="Anomalies Instantly"
+      description="Leverage advanced forensics to identify plagiarism, writing inconsistencies, and multi-author patterns."
     >
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mt-2 w-full">
-        <Link
-          to="/upload"
-          className="
-            inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full
-            text-[15px] font-semibold text-white no-underline
-            shadow-[0_4px_14px_0_rgba(99,102,241,0.39)]
-            transition-all duration-200
-            hover:shadow-[0_6px_20px_rgba(99,102,241,0.23)] hover:-translate-y-0.5
-            active:scale-[0.97]
-          "
-          style={{ background: 'linear-gradient(135deg, #6366f1, #7c3aed)' }}
-        >
-          Upload Paper
-          <ArrowRight className="w-4 h-4" />
-        </Link>
+      <div className="flex flex-col items-center justify-center gap-6 mt-4 w-full max-w-lg mx-auto">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+            <Link
+            to="/upload"
+            className="
+                w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-10 py-4 rounded-full
+                text-[15px] font-bold text-white no-underline
+                shadow-lg shadow-indigo-500/25
+                transition-all duration-200
+                hover:shadow-indigo-500/40 hover:-translate-y-0.5
+                active:scale-[0.98]
+            "
+            style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)' }}
+            >
+            Get Started
+            <Upload className="w-4 h-4" />
+            </Link>
 
-        <a
-          href="#how-it-works"
-          className="inline-flex items-center justify-center gap-2 text-[15px] font-medium text-slate-500 hover:text-indigo-600 transition-colors no-underline"
-        >
-          How it Works
-          <ChevronRight className="w-4 h-4" />
-        </a>
+            <a
+            href="#how-it-works"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full border border-slate-200 bg-white text-[15px] font-bold text-slate-600 hover:bg-slate-50 transition-all no-underline"
+            >
+            How it Works
+            <ChevronRight className="w-4 h-4" />
+            </a>
+        </div>
       </div>
     </HeroGeometric>
   )
@@ -72,76 +75,71 @@ function HowItWorks() {
   const steps = [
     {
       icon: Upload,
-      title: 'Upload Paper',
-      description: 'Drop your academic paper in PDF or DOCX format. Keep it simple and secure.',
+      title: 'Analyze Document',
+      description: 'Upload your paper in PDF or Word. Analysis begins immediately.',
       step: '01',
     },
     {
       icon: Brain,
-      title: 'Analyze Content',
-      description: 'AI runs stylometric analysis and checks citations without manual effort.',
+      title: 'AI Processing',
+      description: 'Our engine identifies linguistic patterns and citation drift.',
       step: '02',
     },
     {
       icon: BarChart3,
-      title: 'Review Insights',
-      description: 'Read the detailed forensic report with mapped anomalies and source matches.',
+      title: 'Full Report',
+      description: 'Download a clean, forensic-grade integrity assessment.',
       step: '03',
     },
   ]
 
   return (
-    <section
-      id="how-it-works"
-      className="w-full py-24 md:py-28 bg-white border-y border-slate-100"
-    >
-      <div className="w-full max-w-[1080px] mx-auto px-6 md:px-8">
-
-        {/* Section Header */}
+    <section id="how-it-works" className="bg-white border-y border-slate-100 flex flex-col items-center w-full">
+      <div className="section-container">
         <motion.div
-          className="w-full flex flex-col items-center text-center mb-16 md:mb-20"
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
+           className="flex flex-col items-center text-center w-full mb-20"
+           variants={fadeUp}
+           initial="hidden"
+           whileInView="visible"
+           viewport={{ once: true }}
         >
-          <h2 className="text-[28px] sm:text-[32px] md:text-[36px] font-bold tracking-tight text-slate-900">
-            Simple, Transparent Process
+          <span className="text-indigo-600 text-sm font-bold tracking-[0.2em] uppercase mb-4 block">Process</span>
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">
+            How Forens<span className="text-indigo-600">IQ</span> Works
           </h2>
-          <p className="text-slate-400 text-[15px] mt-4 max-w-md">
-            Three easy steps from paper upload to full forensic insight.
+          <div className="w-20 h-1 bg-indigo-600 rounded-full mt-6 mb-8" />
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">
+            A state-of-the-art diagnostic pipeline designed to maintain the highest standards of academic integrity.
           </p>
         </motion.div>
 
-        {/* Steps Grid */}
         <motion.div
-          className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-14"
+          className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-6xl mx-auto"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true }}
         >
           {steps.map(({ icon: Icon, title, description, step }, i) => (
             <motion.div
               key={title}
               variants={fadeUp}
               custom={i}
-              className="flex flex-col items-center text-center w-full"
+              className="group flex flex-col items-center text-center p-8 rounded-3xl bg-slate-50 border border-transparent hover:border-indigo-100 hover:bg-white hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300"
             >
-              <div className="w-16 h-16 rounded-2xl bg-[#f8fafc] border border-slate-100 flex items-center justify-center mb-5 shadow-sm flex-shrink-0">
-                <Icon className="w-6 h-6 text-slate-700" />
+              <div className="w-20 h-20 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Icon className="w-8 h-8 text-indigo-600" />
               </div>
-              <span className="text-[11px] font-bold text-slate-300 tracking-[0.2em] uppercase mb-2">
-                {step}
+              <span className="text-xs font-black text-slate-300 tracking-widest uppercase mb-2">
+                Step {step}
               </span>
-              <h3 className="text-[17px] font-semibold text-slate-900 mb-2">{title}</h3>
-              <p className="text-[14px] text-slate-500 leading-[1.7] max-w-[260px] mx-auto">
+              <h3 className="text-xl font-bold text-slate-900 mb-4">{title}</h3>
+              <p className="text-slate-500 leading-relaxed">
                 {description}
               </p>
             </motion.div>
           ))}
         </motion.div>
-
       </div>
     </section>
   )
@@ -152,87 +150,71 @@ function HowItWorks() {
    ───────────────────────────────────────────── */
 function Features() {
   const features = [
-    {
-      icon: Fingerprint,
-      title: 'Stylometric Analysis',
-      description: 'Detect writing style changes across sections using linguistic fingerprinting.',
-      accent: true
-    },
-    {
-      icon: Users,
-      title: 'Multi-Author Detection',
-      description: 'Identify contributions from multiple writers through statistical sentence analysis.',
-      accent: false
-    },
-    {
-      icon: BookOpen,
-      title: 'Citation Tracking',
-      description: 'Verify references against major academic databases automatically.',
-      accent: false
-    },
-    {
-      icon: Shield,
-      title: 'AI Risk Scoring',
-      description: 'Receive a comprehensive integrity score based on forensic dimensions.',
-      accent: true
-    },
+      {
+        icon: Fingerprint,
+        title: 'Stylometrics',
+        description: 'Deep linguistic fingerprinting to detect variations in writing style.',
+      },
+      {
+        icon: Shield,
+        title: 'Draft Integrity',
+        description: 'Tracks revisions and temporal inconsistencies across different drafts.',
+      },
+      {
+        icon: Brain,
+        title: 'Contextual AI',
+        description: 'Detects semantic shifts that indicate external machine assistance.',
+      },
+      {
+        icon: Users,
+        title: 'Team Detection',
+        description: 'Identifies if a paper was co-authored by multiple individuals.',
+      }
   ]
 
   return (
-    <section
-      id="features"
-      className="w-full py-24 md:py-28 bg-[#f8fafc] border-b border-slate-100"
-    >
-      <div className="w-full max-w-[1080px] mx-auto px-6 md:px-8">
-
-        {/* Section Header */}
+    <section id="features" className="bg-slate-50 w-full flex flex-col items-center">
+      <div className="section-container">
         <motion.div
-          className="w-full flex flex-col items-center text-center mb-16 md:mb-20"
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
+           className="flex flex-col items-center text-center w-full mb-20"
+           variants={fadeUp}
+           initial="hidden"
+           whileInView="visible"
+           viewport={{ once: true }}
         >
-          <h2 className="text-[28px] sm:text-[32px] md:text-[36px] font-bold tracking-tight text-slate-900">
-            Powerful Forensic Tools
+           <span className="text-indigo-600 text-sm font-bold tracking-[0.2em] uppercase mb-4 block">Analysis</span>
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">
+            Advanced Capabilities
           </h2>
-          <p className="text-slate-400 text-[15px] mt-4 max-w-md">
-            A complete suite of AI-powered analysis capabilities at your fingertips.
-          </p>
+          <div className="w-20 h-1 bg-indigo-600 rounded-full mt-6 mb-8" />
         </motion.div>
 
-        {/* Features Grid */}
         <motion.div
-          className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full max-w-5xl mx-auto"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true }}
         >
-          {features.map(({ icon: Icon, title, description, accent }, i) => (
-            <motion.div key={title} variants={fadeUp} custom={i} className="w-full">
+          {features.map(({ icon: Icon, title, description }, i) => (
+            <motion.div key={title} variants={fadeUp} custom={i}>
               <div className="
-                w-full bg-white rounded-2xl border border-slate-200
-                p-8 md:p-10 h-full
+                bg-white rounded-[32px] p-10 h-full
                 flex flex-col items-center text-center
-                transition-all duration-300
-                hover:shadow-lg hover:-translate-y-1 hover:border-slate-300
+                border border-slate-200/50 shadow-sm
+                transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1
               ">
-                <div className={`
-                  w-12 h-12 rounded-xl flex items-center justify-center mb-5 flex-shrink-0
-                  ${accent ? 'bg-indigo-50 border border-indigo-100/50' : 'bg-slate-50 border border-slate-100'}
-                `}>
-                  <Icon className={`w-5 h-5 ${accent ? 'text-indigo-600' : 'text-slate-600'}`} />
+                <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center mb-6">
+                  <Icon className="w-6 h-6 text-indigo-600" />
                 </div>
-                <h3 className="text-[17px] font-semibold text-slate-900 mb-2">{title}</h3>
-                <p className="text-[14px] text-slate-500 leading-[1.7] max-w-[320px] mx-auto">
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{title}</h3>
+                <p className="text-slate-500 leading-relaxed max-w-xs mx-auto">
                   {description}
                 </p>
               </div>
             </motion.div>
           ))}
         </motion.div>
-
       </div>
     </section>
   )
@@ -243,34 +225,38 @@ function Features() {
    ───────────────────────────────────────────── */
 function CTASection() {
   return (
-    <section className="w-full py-24 md:py-32 bg-white border-t border-slate-100">
-      <div className="w-full max-w-[1080px] mx-auto px-6 md:px-8">
+    <section className="bg-white w-full flex flex-col items-center">
+      <div className="section-container pb-32">
         <motion.div
-          className="w-full flex flex-col items-center text-center"
+          className="flex flex-col items-center text-center p-12 md:p-24 rounded-[48px] bg-slate-900 text-white w-full max-w-6xl mx-auto relative overflow-hidden"
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true }}
         >
-          <h2 className="text-[28px] sm:text-[32px] md:text-[36px] font-bold tracking-tight text-slate-900 mb-5 max-w-[560px]">
-            Start analyzing your paper today
+          {/* Decorative Background for CTA Card */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2" />
+
+          <h2 className="text-3xl md:text-6xl font-black mb-8 leading-tight tracking-tighter">
+            Elevate the Standards of <br/> Academic Integrity.
           </h2>
-          <p className="text-[16px] md:text-[18px] text-slate-500 leading-[1.6] mb-10 max-w-[480px]">
-            Get instant insights with AI-powered forensic analysis.
+          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
+            Join hundreds of institutions using ForensIQ to safeguard the quality of education.
           </p>
           <Link
             to="/upload"
             className="
-              inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full
-              text-[15px] font-semibold text-white no-underline
-              shadow-[0_4px_14px_0_rgba(99,102,241,0.3)]
-              transition-all duration-200
-              hover:shadow-lg hover:-translate-y-0.5
-              active:scale-[0.97]
+              inline-flex items-center justify-center gap-3 px-12 py-5 rounded-full
+              text-[16px] font-black text-white no-underline
+              bg-white !text-slate-900
+              transition-all duration-300
+              hover:scale-105 hover:shadow-2xl hover:shadow-white/20
+              active:scale-95
             "
-            style={{ background: 'linear-gradient(135deg, #6366f1, #7c3aed)' }}
           >
-            Get Started Now
+            Start Your First Report
+            <ArrowRight className="w-5 h-5" />
           </Link>
         </motion.div>
       </div>
@@ -279,60 +265,23 @@ function CTASection() {
 }
 
 /* ─────────────────────────────────────────────
-   FOOTER
-   ───────────────────────────────────────────── */
-function Footer() {
-  return (
-    <footer className="w-full py-10 md:py-12 bg-[#f8fafc] border-t border-slate-200">
-      <div className="w-full max-w-[1080px] mx-auto px-6 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-
-        {/* Logo */}
-        <div className="flex items-center gap-2.5 flex-shrink-0">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm"
-            style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
-          >
-            <Shield className="w-4 h-4 text-white" />
-          </div>
-          <span className="text-[16px] font-bold text-slate-900 tracking-tight">
-            Forens<span className="text-indigo-600">IQ</span>
-          </span>
-        </div>
-
-        {/* Links */}
-        <div className="flex items-center gap-8">
-          <a href="#how-it-works" className="text-[14px] text-slate-500 hover:text-slate-800 transition-colors no-underline">
-            How It Works
-          </a>
-          <a href="#features" className="text-[14px] text-slate-500 hover:text-slate-800 transition-colors no-underline">
-            Features
-          </a>
-          <a href="#" className="text-[14px] text-slate-500 hover:text-slate-800 transition-colors no-underline">
-            Contact
-          </a>
-        </div>
-
-        {/* Copyright */}
-        <p className="text-[13px] text-slate-400 flex-shrink-0">
-          © {new Date().getFullYear()} ForensIQ
-        </p>
-      </div>
-    </footer>
-  )
-}
-
-/* ─────────────────────────────────────────────
    HOMEPAGE
    ───────────────────────────────────────────── */
 export default function HomePage() {
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-[#f8fafc]">
+    <div className="relative w-full bg-white font-sans overflow-x-hidden min-h-screen text-slate-900 flex flex-col items-center">
       <Header />
-      <HeroSection />
-      <HowItWorks />
-      <Features />
-      <CTASection />
-      <Footer />
+      
+      <main className="relative z-10 w-full bg-white flex flex-col items-center border-b border-slate-100 shadow-2xl rounded-b-[60px] overflow-hidden">
+        <HeroSection />
+        <HowItWorks />
+        <Features />
+        <CTASection />
+      </main>
+
+      <div className="bg-white w-full">
+         <CinematicFooter />
+      </div>
     </div>
   )
 }
