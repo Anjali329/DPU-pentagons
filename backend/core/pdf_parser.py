@@ -34,6 +34,7 @@ def parse_pdf(file_path: str) -> dict:
     for page in doc:
         full_text += page.get_text("text") + "\n"
 
+    page_count = len(doc)
     doc.close()
 
     # Split body text from references section
@@ -42,7 +43,7 @@ def parse_pdf(file_path: str) -> dict:
     return {
         "text": body_text.strip(),
         "citations": citations,
-        "page_count": len(doc),
+        "page_count": page_count,
     }
 
 
