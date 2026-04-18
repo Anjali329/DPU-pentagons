@@ -44,6 +44,8 @@ function ElegantShape({
                 style={{
                     width,
                     height,
+                    willChange: "transform",
+                    transform: "translateZ(0)",
                 }}
                 className="relative"
             >
@@ -52,7 +54,7 @@ function ElegantShape({
                         "absolute inset-0 rounded-full",
                         "bg-gradient-to-r to-transparent",
                         gradient,
-                        "backdrop-blur-[2px] border-2 border-slate-900/[0.05]",
+                        "border-2 border-slate-900/[0.05]",
                         "shadow-[0_8px_32px_0_rgba(0,0,0,0.03)]",
                         "after:absolute after:inset-0 after:rounded-full",
                         "after:bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0.02),transparent_70%)]"
@@ -84,7 +86,10 @@ function HeroGeometric({
     };
 
     return (
-        <div className="relative min-h-[85vh] w-full flex items-center justify-center overflow-hidden bg-[#f8fafc]">
+        <div 
+            className="relative min-h-[85vh] w-full flex items-center justify-center overflow-hidden bg-[#f8fafc]"
+            style={{ isolation: "isolate" }}
+        >
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.03] via-transparent to-rose-500/[0.03] blur-3xl pointer-events-none" />
 
             <div className="absolute inset-0 overflow-hidden pointer-events-none">

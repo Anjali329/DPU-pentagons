@@ -7,7 +7,7 @@ import {
   Fingerprint, ChevronRight
 } from 'lucide-react'
 import { HeroGeometric } from '../components/ui/shape-landing-hero'
-import { Header } from '../components/ui/header-2'
+import { FloatingHeader } from '../components/ui/floating-header'
 import { CinematicFooter } from '../components/ui/motion-footer'
 
 /* ─────────────────────────────────────────────
@@ -270,7 +270,7 @@ function CTASection() {
 export default function HomePage() {
   return (
     <div className="relative w-full bg-white font-sans overflow-x-hidden min-h-screen text-slate-900 flex flex-col items-center">
-      <Header />
+      <FloatingHeader />
       
       <main className="relative z-10 w-full bg-white flex flex-col items-center border-b border-slate-100 shadow-2xl rounded-b-[60px] overflow-hidden">
         <HeroSection />
