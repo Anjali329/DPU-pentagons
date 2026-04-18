@@ -27,8 +27,11 @@ export async function uploadPDF(file) {
   const formData = new FormData()
   formData.append('file', file)
 
+  // Set Content-Type to multipart/form-data so Axios correctly handles it, bypassing the global application/json default
   const response = await api.post('/upload', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   })
   return response.data
 }

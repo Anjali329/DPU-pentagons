@@ -15,10 +15,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
-from api.routes import upload, analyze, report
-
-# Load environment variables
+# Load environment variables before importing routes so db.py can read them
 load_dotenv()
+
+from api.routes import upload, analyze, report
 
 app = FastAPI(
     title="ForensIQ API",
@@ -43,8 +43,10 @@ app.include_router(upload.router, tags=["Upload"])
 app.include_router(analyze.router, tags=["Analysis"])
 app.include_router(report.router, tags=["Report"])
 
-# Ensure uploads directory exists
-os.makedirs("uploads", exist_ok=True)
+# Ensure uploads directory exists using absolute path relative to the script location
+BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_DIR = os.path.abspath(os.getenv("UPLOAD_DIR", os.path.join(BACKEND_DIR, "uploads")))
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
 @app.get("/health", tags=["Health"])

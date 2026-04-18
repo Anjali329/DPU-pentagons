@@ -100,4 +100,10 @@ class AnalysisResponse(BaseModel):
     """Response returned after analysis completes."""
     file_id: str
     status: str = Field(default="completed")
-    report: ForensicReport
+    report: Optional[ForensicReport] = None
+
+class StatusResponse(BaseModel):
+    """Response returned when polling for status."""
+    file_id: str
+    status: str
+    error_message: Optional[str] = None

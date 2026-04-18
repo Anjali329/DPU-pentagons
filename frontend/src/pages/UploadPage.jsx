@@ -25,8 +25,11 @@ export default function UploadPage() {
     const file = e.dataTransfer?.files?.[0] || e.target?.files?.[0]
     if (!file) return
 
-    if (file.type !== 'application/pdf') {
-      setError('Please upload a PDF file.')
+    // Allow application/pdf, application/x-pdf, or unknown type with .pdf extension
+    const validMimeTypes = ['application/pdf', 'application/x-pdf']
+    const isPdfExtension = file.name?.toLowerCase().endsWith('.pdf')
+    if (!validMimeTypes.includes(file.type) && !isPdfExtension) {
+      setError(`Please upload a valid PDF file. Received: ${file.type || 'unknown type'}`)
       return
     }
 
@@ -36,7 +39,17 @@ export default function UploadPage() {
       // Navigate to analysis page with file_id
       navigate('/analysis', { state: { fileId: result.file_id, filename: result.filename } })
     } catch (err) {
-      setError(err.response?.data?.detail || 'Upload failed. Please try again.')
+      // Better error extraction
+      let errorMsg = 'Upload failed. Please try again.'
+      if (err.response?.data?.detail) {
+        errorMsg = typeof err.response.data.detail === 'string' 
+          ? err.response.data.detail 
+          : JSON.stringify(err.response.data.detail)
+      } else if (err.message) {
+        errorMsg += ` (${err.message})`
+      }
+      setError(errorMsg)
+      console.error("Upload error details:", err)
     } finally {
       setUploading(false)
     }

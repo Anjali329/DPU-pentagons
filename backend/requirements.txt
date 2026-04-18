@@ -24,3 +24,6 @@ httpx
 # Data
 numpy
 pydantic
+
+# Database Layer
+supabase

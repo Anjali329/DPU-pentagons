@@ -65,10 +65,20 @@ def _search_arxiv(query: str, max_results: int = 10) -> list:
     url = "http://export.arxiv.org/api/query"
     params = {"search_query": f"all:{query}", "start": 0, "max_results": max_results}
     try:
-        resp = requests.get(url, params=params, timeout=15)
+        resp = requests.get(url, params=params, timeout=10)
+        if resp.status_code == 429:
+            print("arXiv API rate limited. Skipping search.")
+            return []
         resp.raise_for_status()
         return _parse_arxiv_xml(resp.text)
-    except Exception:
+    except requests.exceptions.Timeout:
+        print(f"arXiv API timeout for query: {query}. Skipping.")
+        return []
+    except requests.exceptions.RequestException as e:
+        print(f"arXiv API error: {e}. Skipping.")
+        return []
+    except Exception as e:
+        print(f"Unexpected error in _search_arxiv: {e}. Skipping.")
         return []
 
 

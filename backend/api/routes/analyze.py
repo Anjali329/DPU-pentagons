@@ -24,8 +24,9 @@ Response:
 """
 
 import os
-from fastapi import APIRouter, HTTPException
-from models.schemas import AnalysisResponse
+from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends
+from models.schemas import AnalysisResponse, StatusResponse
+from models.db import get_supabase, SupabaseRESTClient
 
 from core.pdf_parser import parse_pdf
 from core.segmenter import segment_text
@@ -39,30 +40,20 @@ router = APIRouter()
 
 UPLOAD_DIR = os.getenv("UPLOAD_DIR", "./uploads")
 
-# In-memory report storage (replace with DB in production)
-reports_store: dict = {}
-
-
-@router.post("/analyze/{file_id}", response_model=AnalysisResponse)
-async def analyze_paper(file_id: str):
-    """
-    Run the full ForensIQ analysis pipeline on an uploaded PDF.
-
-    Args:
-        file_id: UUID returned from /upload endpoint.
-
-    Returns:
-        AnalysisResponse with complete forensic report.
-    """
-    # Verify file exists
-    file_path = os.path.join(UPLOAD_DIR, f"{file_id}.pdf")
-    if not os.path.exists(file_path):
-        raise HTTPException(
-            status_code=404,
-            detail=f"File with id '{file_id}' not found. Upload first via POST /upload."
-        )
+def run_analysis_pipeline(file_id: str):
+    db: SupabaseRESTClient = get_supabase()
+    if not db:
+        return
 
     try:
+        job = db.get_job(file_id)
+        if not job:
+            return
+            
+        db.update_job(file_id, {"status": "processing"})
+
+        file_path = os.path.join(UPLOAD_DIR, f"{file_id}.pdf")
+
         # Step 1: Parse PDF
         parsed = parse_pdf(file_path)
 
@@ -96,17 +87,73 @@ async def analyze_paper(file_id: str):
             source_matches=source_matches,
         )
 
-        # Store report for later retrieval
-        reports_store[file_id] = report
-
-        return AnalysisResponse(
-            file_id=file_id,
-            status="completed",
-            report=report,
-        )
+        report_data = report.model_dump() if hasattr(report, "model_dump") else (report.dict() if hasattr(report, "dict") else report)
+        
+        db.update_job(file_id, {
+            "status": "completed",
+            "report_data": report_data
+        })
 
     except Exception as e:
+        db.update_job(file_id, {
+            "status": "failed",
+            "error_message": str(e)
+        })
+
+
+@router.post("/analyze/{file_id}", response_model=AnalysisResponse)
+async def analyze_paper(file_id: str, background_tasks: BackgroundTasks, db: SupabaseRESTClient = Depends(get_supabase)):
+    """
+    Triggers the full ForensIQ analysis pipeline in the background.
+
+    Args:
+        file_id: UUID returned from /upload endpoint.
+
+    Returns:
+        AnalysisResponse with status indicating processing has started.
+    """
+    if not db:
+        raise HTTPException(status_code=500, detail="Database client not initialized")
+        
+    try:
+        job = db.get_job(file_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    if not job:
         raise HTTPException(
-            status_code=500,
-            detail=f"Analysis pipeline failed: {str(e)}"
+            status_code=404,
+            detail=f"File with id '{file_id}' not found. Upload first via POST /upload."
         )
+
+    if job.get("status") == "processing":
+        return AnalysisResponse(file_id=file_id, status="processing")
+
+    background_tasks.add_task(run_analysis_pipeline, file_id)
+
+    return AnalysisResponse(
+        file_id=file_id,
+        status="processing"
+    )
+
+@router.get("/status/{file_id}", response_model=StatusResponse)
+async def get_status(file_id: str, db: SupabaseRESTClient = Depends(get_supabase)):
+    """
+    Poll the current status of the analysis pipeline.
+    """
+    if not db:
+        raise HTTPException(status_code=500, detail="Database client not initialized")
+        
+    try:
+        job = db.get_job(file_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    if not job:
+        raise HTTPException(status_code=404, detail="Analysis job not found")
+        
+    return StatusResponse(
+        file_id=file_id,
+        status=job.get("status"),
+        error_message=job.get("error_message")
+    )
