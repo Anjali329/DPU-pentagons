@@ -27,7 +27,7 @@ from models.schemas import UploadResponse
 router = APIRouter()
 
 UPLOAD_DIR = os.getenv("UPLOAD_DIR", "./uploads")
-MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE_MB", "50")) * 1024 * 1024  # Convert to bytes
+MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE_MB", "5000")) * 1024 * 1024  # Default 5GB limit
 
 
 @router.post("/upload", response_model=UploadResponse)
@@ -56,7 +56,7 @@ async def upload_pdf(file: UploadFile = File(...)):
     if len(content) > MAX_FILE_SIZE:
         raise HTTPException(
             status_code=413,
-            detail=f"File exceeds maximum size of {MAX_FILE_SIZE // (1024*1024)}MB."
+            detail=f"File exceeds maximum allowed size."
         )
 
     # Generate unique file ID

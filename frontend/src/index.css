@@ -2,14 +2,14 @@
 
 /* ─── Design Tokens ──────────────────────────────── */
 :root {
-  --forensiq-bg: #0a0e1a;
-  --forensiq-surface: #111827;
-  --forensiq-surface-2: #1e293b;
-  --forensiq-border: #1e3a5f;
-  --forensiq-text: #e2e8f0;
-  --forensiq-text-muted: #94a3b8;
-  --forensiq-accent: #6366f1;
-  --forensiq-accent-glow: rgba(99, 102, 241, 0.3);
+  --forensiq-bg: #f8fafc;
+  --forensiq-surface: #ffffff;
+  --forensiq-surface-2: #f1f5f9;
+  --forensiq-border: #cbd5e1;
+  --forensiq-text: #0f172a;
+  --forensiq-text-muted: #64748b;
+  --forensiq-accent: #4f46e5;
+  --forensiq-accent-glow: rgba(79, 70, 229, 0.15);
   --forensiq-success: #10b981;
   --forensiq-warning: #f59e0b;
   --forensiq-danger: #ef4444;
@@ -42,7 +42,7 @@ body {
 
 /* ─── Glass Card ─────────────────────────────────── */
 .glass-card {
-  background: rgba(17, 24, 39, 0.7);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(16px);
   border: 1px solid var(--forensiq-border);
   border-radius: 16px;
@@ -71,4 +71,111 @@ body {
 }
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ─── 3D & Upload ────────────────────────────────── */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes scan {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.animate-scan {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--forensiq-accent);
+  box-shadow: 0 0 10px 2px var(--forensiq-accent-glow);
+  animation: scan 2s linear infinite;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.perspective-container {
+  perspective: 1200px;
+}
+.card-3d-base {
+  background: linear-gradient(145deg, rgba(255,255,255,1), rgba(248,250,252,0.9));
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 
+    inset 0 1px 1px rgba(255,255,255,1),
+    0 10px 25px rgba(0,0,0,0.04),
+    0 1px 3px rgba(0,0,0,0.02);
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.card-3d-base:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    inset 0 1px 1px rgba(255,255,255,1),
+    0 20px 40px rgba(0,0,0,0.08),
+    0 4px 15px var(--forensiq-accent-glow);
+  border-color: rgba(79,70,229,0.2);
+}
+
+.upload-pedestal {
+  transform-style: preserve-3d;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(241,245,249,0.95));
+  border-top: 1px solid rgba(255,255,255,1);
+  border-left: 1px solid rgba(255,255,255,0.8);
+  border-right: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  border-radius: 24px;
+  box-shadow: 
+    0 30px 60px -15px rgba(0,0,0,0.1),
+    0 10px 20px -5px rgba(0,0,0,0.05),
+    inset 0 20px 40px -20px rgba(255,255,255,1);
+  position: relative;
+  overflow: hidden;
+}
+.upload-pedestal.dragging {
+  border-color: var(--forensiq-accent);
+  box-shadow: 
+    0 40px 80px -15px rgba(0,0,0,0.15),
+    inset 0 20px 40px -20px rgba(79,70,229,0.1),
+    0 0 40px rgba(79,70,229,0.1);
+  transform: scale(1.02) translateZ(20px);
+}
+
+.report-card-3d {
+  background: linear-gradient(145deg, rgba(255,255,255,1), rgba(248,249,250,0.8));
+  border: 1px solid rgba(0,0,0,0.03);
+  box-shadow: 0 10px 40px -15px rgba(79,70,229,0.15), inset 0 1px 0 rgba(255,255,255,1);
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.report-card-3d:hover {
+  transform: translateY(-8px) rotateX(2deg) rotateY(1deg);
+  box-shadow: 
+    0 30px 60px -20px rgba(79,70,229,0.4),
+    0 0 30px rgba(79,70,229,0.1),
+    inset 0 1px 0 rgba(255,255,255,1);
+  border-color: rgba(79,70,229,0.2);
+}
+
+.report-card-3d .icon-box {
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.report-card-3d:hover .icon-box {
+  transform: translateZ(30px) scale(1.1);
+  background: var(--forensiq-accent);
+  color: white;
+  box-shadow: 0 10px 20px rgba(79,70,229,0.3);
+}
+
+.text-float {
+  animation: float 6s ease-in-out infinite;
 }
