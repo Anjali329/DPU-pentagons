@@ -252,24 +252,30 @@ export function CinematicFooter() {
           </div>
 
           {/* 3. Bottom bar */}
-          <div className="relative z-20 w-full pb-8 px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6 max-w-7xl mx-auto">
-            <div className="text-slate-400 text-[10px] md:text-xs font-semibold tracking-widest uppercase">
-              © 2026 ForensIQ. All rights reserved.
+          <div className="relative z-20 w-full pb-8 px-6 md:px-12 flex flex-col md:flex-row items-center gap-6 max-w-7xl mx-auto">
+            <div className="flex-1 flex justify-center md:justify-start order-2 md:order-1">
+              <div className="text-slate-400 text-[10px] md:text-xs font-semibold tracking-widest uppercase">
+                © 2026 ForensIQ. All rights reserved.
+              </div>
             </div>
 
-            <div className="footer-glass-pill px-6 py-3 rounded-full flex items-center gap-2 cursor-default border-slate-100">
-              <span className="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest">Powered by</span>
-              <span className="text-slate-900 font-black text-xs md:text-sm tracking-normal">ForensIQ Intelligence</span>
+            <div className="flex-1 flex justify-center order-1 md:order-2">
+              <div className="footer-glass-pill px-6 py-3 rounded-full flex items-center gap-2 cursor-default border-slate-100">
+                <span className="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest">Powered by</span>
+                <span className="text-slate-900 font-black text-xs md:text-sm tracking-normal">ForensIQ Intelligence</span>
+              </div>
             </div>
 
-            <button
-              onClick={scrollToTop}
-              className="w-12 h-12 rounded-full footer-glass-pill flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors shadow-sm"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-              </svg>
-            </button>
+            <div className="flex-1 flex justify-center md:justify-end order-3">
+              <button
+                onClick={scrollToTop}
+                className="w-12 h-12 rounded-full footer-glass-pill flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors shadow-sm"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                </svg>
+              </button>
+            </div>
           </div>
         </footer>
       </div>
