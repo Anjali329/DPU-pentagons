@@ -49,18 +49,31 @@ function Navbar() {
   )
 }
 
+import HomePage from './pages/HomePage.jsx'
+
+function DashboardLayout({ children }) {
+  return (
+    <>
+      <Navbar />
+      <main style={{ paddingTop: 80 }}>
+        {children}
+      </main>
+    </>
+  )
+}
+
 export default function App() {
   return (
     <Router>
-      <Navbar />
-      <main style={{ paddingTop: 80 }}>
-        <Routes>
-          <Route path="/" element={<UploadPage />} />
-          <Route path="/analysis" element={<AnalysisPage />} />
-          <Route path="/report" element={<ReportPage />} />
-          <Route path="/report/:fileId" element={<ReportPage />} />
-        </Routes>
-      </main>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        
+        {/* Dashboard Routes */}
+        <Route path="/upload" element={<DashboardLayout><UploadPage /></DashboardLayout>} />
+        <Route path="/analysis" element={<DashboardLayout><AnalysisPage /></DashboardLayout>} />
+        <Route path="/report" element={<DashboardLayout><ReportPage /></DashboardLayout>} />
+        <Route path="/report/:fileId" element={<DashboardLayout><ReportPage /></DashboardLayout>} />
+      </Routes>
     </Router>
   )
 }
